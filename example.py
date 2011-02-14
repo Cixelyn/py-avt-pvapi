@@ -1,6 +1,6 @@
 """Quick example demonstrating the functionality of avt-pvapi.py"""
 
-from avt-pvapi.py import *
+from pvapi import *
 
 
 if __name__=="__main__":
