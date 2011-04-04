@@ -1,6 +1,9 @@
 """Quick example demonstrating the functionality of avt-pvapi.py"""
 
+
+import numpy as np
 from pvapi import *
+import matplotlib.pyplot as plt
 
 
 if __name__=="__main__":
@@ -21,9 +24,9 @@ if __name__=="__main__":
     sleep(1)
     print c.commandRun(cam,"AcquisitionStart")    
 
-    sleep(3)
+    sleep(1)
     frame = c.captureFrame(cam)
-    sleep(3)
+    sleep(1)
 
 
     print c.commandRun(cam,"AcquisitionStop")
@@ -41,7 +44,8 @@ if __name__=="__main__":
     
     imbuff = frame.ImageBuffer
     converted = [ord(imbuff[x]) for x in range(322752)]
-    resized = array(converted).reshape(492,656)
-    pylab.imshow(resized)
+    resized = np.array(converted).reshape(492,656)
+    plt.imshow(resized)
+    plt.show()
 
 
