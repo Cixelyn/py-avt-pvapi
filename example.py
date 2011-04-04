@@ -1,6 +1,5 @@
 """Quick example demonstrating the functionality of avt-pvapi.py"""
 
-
 import numpy as np
 from pvapi import *
 import cv
@@ -37,8 +36,6 @@ if __name__=="__main__":
 
         if cv.WaitKey(1)==27:
             break
-
-
 
     #Cleanup
     c.commandRun(cam,"AcquisitionStop")

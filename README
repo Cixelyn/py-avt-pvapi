@@ -10,7 +10,7 @@ Requirements:
 	(http://www.alliedvisiontec.com/us/products/software/windows/avt-pvapi-sdk.html)
 
 Usage Notes:
-	Check the example in example.py.
+	Check the example in example.py.  Note you will need numpy and openCV to run.
 	Not all functions are implemented, but the example demonstrates
-	successful initialization of the camera, captures a frame,
-	and then shuts down the driver engine.
+	successful initialization of the camera, continuous frame capture and display,
+	and then driver engine shutdown..
