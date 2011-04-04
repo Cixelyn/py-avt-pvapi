@@ -3,49 +3,48 @@
 
 import numpy as np
 from pvapi import *
-import matplotlib.pyplot as plt
+import cv
 
 
 if __name__=="__main__":
-    
-    c = CameraDriver()
-    print c.initialize()
-    
-    uid = c.cameraList()[0].UniqueId
-    print uid
 
+    #Initialize OpenCV Windows
+    cv.NamedWindow('capture',1)
+    
+
+    #Initialize Camera Stuff
+    c = CameraDriver()
+    c.initialize()
+    uid = c.cameraList()[0].UniqueId
     cam = c.cameraOpen(uid)
 
-    print c.captureStart(cam)
+    c.captureStart(cam)
     
-
     #print c.attrEnumSet(cam,"AcquisitionMode","Continuous")
-    print c.attrEnumSet(cam,"FrameStartTriggerMode","Freerun")
-    sleep(1)
-    print c.commandRun(cam,"AcquisitionStart")    
-
-    sleep(1)
-    frame = c.captureFrame(cam)
-    sleep(1)
+    c.attrEnumSet(cam,"FrameStartTriggerMode","Freerun")
+    c.commandRun(cam,"AcquisitionStart")    
 
 
-    print c.commandRun(cam,"AcquisitionStop")
-    print c.captureEnd(cam)
-    
-    
-    print c.cameraClose(cam)
-    
-    
+    #Main Capture Loop
+    while True:
+        frame = c.captureFrame(cam)
 
-    print c.attrUint32Get(cam,"StatFramesCompleted")    
+        imbuff = frame.ImageBuffer
+        converted = [ord(imbuff[x]) for x in range(322752)]
+        resized = np.array(converted).reshape(492,656)/255.0
+
+        cv.ShowImage('capture',cv.fromarray(resized))
+
+        if cv.WaitKey(1)==27:
+            break
+
+
+
+    #Cleanup
+    c.commandRun(cam,"AcquisitionStop")
+    c.captureEnd(cam)
     
+    c.cameraClose(cam)
+    c.attrUint32Get(cam,"StatFramesCompleted")    
     
     c.uninitialize()
-    
-    imbuff = frame.ImageBuffer
-    converted = [ord(imbuff[x]) for x in range(322752)]
-    resized = np.array(converted).reshape(492,656)
-    plt.imshow(resized)
-    plt.show()
-
-
